@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>第二周作业</title>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+    <script type="text/javascript">
+
+        window.onload = function () {
+            var container = document.getElementById('container');
+            var list = document.getElementById('body');
+            var buttons = document.getElementById('buttons').getElementsByTagName('span');
+            var prev = document.getElementById('prev');
+            var next = document.getElementById('next');
+            var index = 1;
+            var len = 5;
+            var animated = false;
+            var interval = 3000;
+            var timer;
+
+
+            function animate (offset) {
+                if (offset == 0) {
+                    return;
+                }
+                animated = true;
+                var time = 300;
+                var inteval = 10;
+                var speed = offset/(time/inteval);
+                var left = parseInt(list.style.left) + offset;
+
+                var go = function (){
+                    if ( (speed > 0 && parseInt(list.style.left) < left) || (speed < 0 && parseInt(list.style.left) > left)) {
+                        list.style.left = parseInt(list.style.left) + speed + 'px';
+                        setTimeout(go, inteval);
+                    }
+                    else {
+                        list.style.left = left + 'px';
+                        if(left>-200){
+                            list.style.left = -600 * len + 'px';
+                        }
+                        if(left<(-600 * len)) {
+                            list.style.left = '-600px';
+                        }
+                        animated = false;
+                    }
+                }
+                go();
+            }
+
+            function showButton() {
+                for (var i = 0; i < buttons.length ; i++) {
+                    if( buttons[i].className == 'on'){
+                        buttons[i].className = '';
+                        break;
+                    }
+                }
+                buttons[index - 1].className = 'on';
+            }
+
+            function play() {
+                timer = setTimeout(function () {
+                    next.onclick();
+                    play();
+                }, interval);
+            }
+            function stop() {
+                clearTimeout(timer);
+            }
+
+            next.onclick = function () {
+                if (animated) {
+                    return;
+                }
+                if (index == 5) {
+                    index = 1;
+                }
+                else {
+                    index += 1;
+                }
+                animate(-600);
+                showButton();
+            }
+            prev.onclick = function () {
+                if (animated) {
+                    return;
+                }
+                if (index == 1) {
+                    index = 5;
+                }
+                else {
+                    index -= 1;
+                }
+                animate(600);
+                showButton();
+            }
+
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].onclick = function () {
+                    if (animated) {
+                        return;
+                    }
+                    if(this.className == 'on') {
+                        return;
+                    }
+                    var myIndex = parseInt(this.getAttribute('index'));
+                    var offset = -600 * (myIndex - index);
+
+                    animate(offset);
+                    index = myIndex;
+                    showButton();
+                }
+            }
+
+            container.onmouseover = stop;
+            container.onmouseout = play;
+
+            play();
+
+        }
+    </script>
+</head>
+<body>
+	<div class="head">
+		<div class="head_inside">
+			<div class="inside_center">
+				<img src="images/head_center.png">
+			</div>
+			<div class="inside_right">
+				<p>Follow us on <a href="#">Facbook</a>,<a href="#">Twitter</a> and flickr</p>
+			</div>
+		</div>
+	</div><!-- head结束 -->
+	<hr>
+	<div class="nav">
+		<div class="nav_center">
+			<div class="nav_center_left">
+				<ul>
+					<li class="li_first"><a href="#">HOME</a></li>	
+					<div class="li_others">
+						<li><a href="#">PORTFOLIO</a></li>
+						<li><a href="#">FULL WIDTH</a></li>
+						<li><a href="#">ARCHIVES</a></li>
+						<li class="li_five">
+							<a href="#">DROPS</a>
+							<div class="five_hidden">
+								<div class="five_hidden_left">
+									<div>
+										<a href="#">Lorem Ipsum</a>	
+									</div>
+									<div>
+										<a href="#">Consectetur Adipisiciing</a>
+									</div>
+									<div >
+										<a href="#">Eiusm Tempor</a>
+									</div>
+								</div>
+								<div class="five_hidden_right">
+									<div>
+										<a href="#">Duis Aute</a>
+									</div>
+									<div>
+										<a href="#">Reprehenderit</a>
+									</div>
+									<div>
+										<a href="#">Voluptate Velit</a>
+									</div>
+								</div>
+							</div><!-- five_hidden结束 -->
+						</li>	
+						<li><a href="#">BLOG</a></li>
+						<li><a href="#">CONTACT</a></li>	
+					</div><!-- li_others结束 -->
+				</ul>
+			</div><!-- nav_center_left结束 -->
+			<div class="nav_center_right">
+				<input type="text" name="">
+				<img src="images/input.png">
+			</div>
+		</div>
+	</div><!-- nav结束 -->
+	<div class="container">
+		<div class="body">
+			<div class="main">
+				<div class="main_center">
+					<div class="beng_left">
+						<p>WE ARE MUNDUS</p>
+					</div>
+					<div class="beng_right">
+						<P>Donec sed odio dui.Nulla vitae elit libero,a pharetra augue<br>Nullam id dolor id nibh ultrieies vehicula ut id elit<br>Integer posuere erat a ante venenatis.<br></P>
+					</div>
+					<div class="beng_bottom">
+						<a href="#">READ MORE</a>
+					</div>
+				</div>
+			</div><!-- mian结束 -->
+			<img src="images/background2.png">
+			<img src="images/background3.png">
+			<img src="images/background4.png">
+		</div>
+		<div id="buttons">
+	        <span index="1" class="on"></span>
+	        <span index="2"></span>
+	        <span index="3"></span>
+	        <span index="4"></span>
+	    </div>
+	    <!-- <a href="javascript:;" id="prev" class="arrow">&lt;</a>
+    	<a href="javascript:;" id="next" class="arrow">&gt;</a> -->
+	</div>
+			
+</body>
+</html>
